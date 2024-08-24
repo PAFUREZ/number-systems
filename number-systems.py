@@ -16,7 +16,7 @@ def with_hex_format(value, ns_to):
 
 def without_hex_format(value, ns_from):
     if ns_from == 16 and not value.isdigit():
-        return {v: k for k, v in dict.items()}[int(value)]
+        return int({v: k for k, v in dict.items()}[value])
     return int(value)
 
 
@@ -24,6 +24,7 @@ def number_systems(value, ns_from, ns_to):
     if ns_from == ns_to:
         return value
     if ns_from == 10:
+        value = int(value)
         value_by_ns_to = ''
         while value // ns_to > 0:
             value_by_ns_to = with_hex_format(
@@ -36,13 +37,13 @@ def number_systems(value, ns_from, ns_to):
         value_by_ns_to = 0
         for i, char in enumerate(str(value)):
             value_by_ns_to += without_hex_format(
-                value, ns_from
+                char, ns_from
             ) * ns_from ** (len(str(value)) - i - 1)
         return value_by_ns_to
 
 
 while input('Продолжить переводить числа?: ').lower() != 'нет':
-    num = int(input('Введите число: '))
+    num = input('Введите число: ')
     ns_from = int(input('Введите исходную систему счисления: '))
     ns_to = int(input('Введите систему счисления, в которую перевести: '))
     print(number_systems(num, ns_from, ns_to))
